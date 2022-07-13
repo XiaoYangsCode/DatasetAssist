@@ -66,6 +66,16 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_4)
 
+        self.chooseAllPushButton = QPushButton(self.editorGroupBox)
+        self.chooseAllPushButton.setObjectName(u"chooseAllPushButton")
+
+        self.verticalLayout.addWidget(self.chooseAllPushButton)
+
+        self.cancelChooseAllPushButton = QPushButton(self.editorGroupBox)
+        self.cancelChooseAllPushButton.setObjectName(u"cancelChooseAllPushButton")
+
+        self.verticalLayout.addWidget(self.cancelChooseAllPushButton)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -121,40 +131,87 @@ class Ui_MainWindow(object):
         self.groupBox.setObjectName(u"groupBox")
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_5 = QLabel(self.groupBox)
-        self.label_5.setObjectName(u"label_5")
+        self.label_4 = QLabel(self.groupBox)
+        self.label_4.setObjectName(u"label_4")
 
-        self.gridLayout.addWidget(self.label_5, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_4, 1, 2, 1, 1)
+
+        self.label_8 = QLabel(self.groupBox)
+        self.label_8.setObjectName(u"label_8")
+
+        self.gridLayout.addWidget(self.label_8, 0, 6, 1, 1)
+
+        self.label_2 = QLabel(self.groupBox)
+        self.label_2.setObjectName(u"label_2")
+
+        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
+
+        self.label_6 = QLabel(self.groupBox)
+        self.label_6.setObjectName(u"label_6")
+
+        self.gridLayout.addWidget(self.label_6, 1, 6, 1, 1)
+
+        self.label_3 = QLabel(self.groupBox)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout.addWidget(self.label_3, 0, 2, 1, 1)
+
+        self.line_5 = QFrame(self.groupBox)
+        self.line_5.setObjectName(u"line_5")
+        self.line_5.setFrameShape(QFrame.VLine)
+        self.line_5.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_5, 1, 1, 1, 1)
+
+        self.line_4 = QFrame(self.groupBox)
+        self.line_4.setObjectName(u"line_4")
+        self.line_4.setFrameShape(QFrame.VLine)
+        self.line_4.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_4, 0, 1, 1, 1)
 
         self.label = QLabel(self.groupBox)
         self.label.setObjectName(u"label")
 
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
-        self.label_3 = QLabel(self.groupBox)
-        self.label_3.setObjectName(u"label_3")
-
-        self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
-
-        self.label_6 = QLabel(self.groupBox)
-        self.label_6.setObjectName(u"label_6")
-
-        self.gridLayout.addWidget(self.label_6, 5, 0, 1, 1)
-
-        self.label_4 = QLabel(self.groupBox)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout.addWidget(self.label_4, 1, 1, 1, 1)
-
         self.label_7 = QLabel(self.groupBox)
         self.label_7.setObjectName(u"label_7")
 
-        self.gridLayout.addWidget(self.label_7, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_7, 0, 4, 1, 1)
 
-        self.label_2 = QLabel(self.groupBox)
-        self.label_2.setObjectName(u"label_2")
+        self.line_6 = QFrame(self.groupBox)
+        self.line_6.setObjectName(u"line_6")
+        self.line_6.setFrameShape(QFrame.VLine)
+        self.line_6.setFrameShadow(QFrame.Sunken)
 
-        self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.line_6, 0, 3, 1, 1)
+
+        self.line_7 = QFrame(self.groupBox)
+        self.line_7.setObjectName(u"line_7")
+        self.line_7.setFrameShape(QFrame.VLine)
+        self.line_7.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_7, 1, 3, 1, 1)
+
+        self.label_5 = QLabel(self.groupBox)
+        self.label_5.setObjectName(u"label_5")
+
+        self.gridLayout.addWidget(self.label_5, 1, 4, 1, 1)
+
+        self.line_8 = QFrame(self.groupBox)
+        self.line_8.setObjectName(u"line_8")
+        self.line_8.setFrameShape(QFrame.VLine)
+        self.line_8.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_8, 0, 5, 1, 1)
+
+        self.line_9 = QFrame(self.groupBox)
+        self.line_9.setObjectName(u"line_9")
+        self.line_9.setFrameShape(QFrame.VLine)
+        self.line_9.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_9, 1, 5, 1, 1)
 
 
         self.horizontalLayout_3.addWidget(self.groupBox)
@@ -192,17 +249,20 @@ class Ui_MainWindow(object):
         self.editorGroupBox.setTitle(QCoreApplication.translate("MainWindow", u"Editor", None))
         self.openPushButton.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.savePushButton.setText(QCoreApplication.translate("MainWindow", u"Save", None))
-        self.jsonCopyCheckBox.setText(QCoreApplication.translate("MainWindow", u"jsonCopy", None))
-        self.plotCheckBox.setText(QCoreApplication.translate("MainWindow", u"plot", None))
+        self.jsonCopyCheckBox.setText(QCoreApplication.translate("MainWindow", u"JsonCopy", None))
+        self.plotCheckBox.setText(QCoreApplication.translate("MainWindow", u"Plot", None))
+        self.chooseAllPushButton.setText(QCoreApplication.translate("MainWindow", u"ChooseAll", None))
+        self.cancelChooseAllPushButton.setText(QCoreApplication.translate("MainWindow", u"CancelChooseAll", None))
         self.closePushButton.setText(QCoreApplication.translate("MainWindow", u"Close", None))
         self.imageLabel.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Readme", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"To start: gg", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Next: j", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Next 5: J", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Choose one: space ", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Previous 5: K", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"To end: G", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Previous 5: shift+k", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Check plot: p", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Previous: k", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Choose one: space ", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Next 5: shift+j", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Next: j", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"To end: ctrl+u", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"To start: ctrl+i", None))
     # retranslateUi
 
