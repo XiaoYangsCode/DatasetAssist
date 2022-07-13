@@ -1,7 +1,9 @@
-from .ui_mainwindow import Ui_MainWindow
+from ui.ui_mainwindow import Ui_MainWindow
+from utils.jsonhandler import JsonHandler
+from utils.painthander import PaintHandler
 from PySide6.QtWidgets import QMainWindow, QLabel, QFileDialog, QMessageBox, QListWidgetItem
 from PySide6.QtCore import QDir, Qt, QFileInfo, QFile
-from PySide6.QtGui import QPixmap, QImage
+from PySide6.QtGui import QPixmap
 import typing
 
 class MainWindow(QMainWindow):
@@ -11,19 +13,19 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.setWindowTitle("DatasetAssist")
-        self.ui.jsonCopyCheckBox.setChecked(True)
 
-        self.file_folder = ""
-        self.dst_folder = ""
         self.pathLabel = QLabel(self)
-        self.pathLabel.setText("No Path!!")
         self.nameLabel = QLabel(self)
-        self.nameLabel.setText("    Not Choose!!")
         self.ui.statusbar.addWidget(self.pathLabel, 0)
         self.ui.statusbar.addWidget(self.nameLabel, 1)
-        self.ui.listWidget.clear()
-        self.ui.imageLabel.clear()
-        
+        self.jsonHandler = JsonHandler()
+        self.paintHandler = PaintHandler()
+        self.file_folder = ""
+        self.dst_folder = ""
+
+        # reset
+        self.reset()
+
         # signal to slot
         self.ui.openPushButton.clicked.connect(self.onOpenButtonClicked)
         self.ui.closePushButton.clicked.connect(self.onCloseButtonClicked)
@@ -31,15 +33,26 @@ class MainWindow(QMainWindow):
         self.ui.plotCheckBox.stateChanged.connect(self.onPlotCheckBoxStateChanged)
         self.ui.listWidget.itemSelectionChanged.connect(self.onItemSelectionChange)
 
-    def showImageByName(self, image_name : str):
+    def getOrigImage(self, image_name:str, is_plot:bool=False) -> QPixmap:
+        file_info = QFileInfo()
+        # check image path
         image_path = f"{self.file_folder}/{image_name}"
-
-        file_info = QFileInfo(image_path)
+        file_info.setFile(image_path)
         if not file_info.isFile():
             print(f"Image is not exist: {image_path}")
             return
-
         orig_image = QPixmap(image_path)
+        if is_plot:
+            # check json path
+            json_path = image_path.replace('.jpg', '.json')
+            if self.jsonHandler.tryOpenParesJson(json_path):
+                # paint
+                self.paintHandler.paintByJson(orig_image, self.font(), self.jsonHandler)
+
+        return orig_image
+
+    def showImageByName(self, image_name:str, is_plot:bool=False):
+        orig_image = self.getOrigImage(image_name, is_plot)
         ratio = orig_image.width() / orig_image.height()
         width = self.ui.imageLabel.width()
         height = self.ui.imageLabel.height()
@@ -53,6 +66,7 @@ class MainWindow(QMainWindow):
             image_height = height
 
         image = orig_image.scaled(image_width, image_height)
+        self.ui.imageLabel.clear()
         self.ui.imageLabel.setPixmap(image)
 
     def copy_files(self, images:typing.List[str], is_copyjson:bool=False):
@@ -64,6 +78,15 @@ class MainWindow(QMainWindow):
                 src_json_path = src_path.replace('.jpg', '.json')
                 dst_json_path = dst_path.replace('.jpg', '.json')
                 QFile.copy(src_json_path, dst_json_path)
+
+    def reset(self):
+        self.ui.jsonCopyCheckBox.setChecked(True)
+        self.ui.listWidget.clear()
+        self.ui.imageLabel.clear()
+        self.file_folder = ""
+        self.dst_folder = ""
+        self.pathLabel.setText("No Path!!")
+        self.nameLabel.setText("    Not Choose!!")
 
     # slots
     def onOpenButtonClicked(self):
@@ -89,12 +112,7 @@ class MainWindow(QMainWindow):
         result = QMessageBox.question(self, "Warning", "Close image folder??", QMessageBox.Ok | QMessageBox.Discard, QMessageBox.Discard)
         if result == QMessageBox.Ok:
             # reset state
-            self.ui.listWidget.clear()
-            self.ui.imageLabel.clear()
-            self.file_folder = ""
-            self.dst_folder = ""
-            self.pathLabel.setText("No Path!!")
-            self.nameLabel.setText("    Not Choose!!")
+            self.reset()
 
     def onSaveButtonClicked(self):
         print("save")
@@ -110,20 +128,25 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Warning", "No image has been choosed!!")
             return
         # open dialog to choose path
-        # copy files TODO json file
+        # copy files
         file_dialog = QFileDialog(self)
         self.dst_folder = file_dialog.getExistingDirectory(self, "Copy dst image folder")
         if self.dst_folder != "":
             self.copy_files(choosed_images, self.ui.jsonCopyCheckBox.isChecked())
 
     def onPlotCheckBoxStateChanged(self):
-        print(self.ui.plotCheckBox.isChecked())
+        curItem = self.ui.listWidget.currentItem()
+        if curItem is None:
+            return
+        image_name = curItem.text()
+        self.showImageByName(image_name, self.ui.plotCheckBox.isChecked())
+
 
     def onItemSelectionChange(self):
         curItem = self.ui.listWidget.currentItem()
         image_name = curItem.text()
         self.nameLabel.setText(f"    Image Name: {image_name}")
-        self.showImageByName(image_name)
+        self.showImageByName(image_name, self.ui.plotCheckBox.isChecked())
 
 
 
