@@ -24,10 +24,16 @@ class JsonHandler(object):
         error = QJsonParseError()
         json = QJsonDocument.fromJson(data, error)
         jsonObject = json.object()
-        self._cls_name_lst = list(jsonObject["cls_names"])
-        self._class_lst =  list(jsonObject["classes"])
-        self._score_lst =  list(jsonObject["scores"])
-        self._box_lst = list(jsonObject["boxes"])
+        if json.isNull() or json.isEmpty():
+            self._cls_name_lst = []
+            self._class_lst = []
+            self._score_lst = []
+            self._box_lst = []
+        else:
+            self._cls_name_lst = list(jsonObject["cls_names"])
+            self._class_lst = list(jsonObject["classes"])
+            self._score_lst = list(jsonObject["scores"])
+            self._box_lst = list(jsonObject["boxes"])
 
     def tryOpenParesJson(self, json_path:str) -> bool:
         # check json path
@@ -41,7 +47,7 @@ class JsonHandler(object):
             return False
         self.jsonParse()
         if not self.checkAllLstCount():
-            print(f"Open json connet count is error: {json_path}")
+            print(f"Open json count is error: {json_path}")
             return False
         return True
 
@@ -50,6 +56,8 @@ class JsonHandler(object):
     
     def checkAllLstCount(self) -> bool:
         count = self.getTotalCount()
+        if count == 0:
+            return False
         if count == len(self._class_lst) and \
            count == len(self._score_lst) and \
            count == len(self._box_lst):

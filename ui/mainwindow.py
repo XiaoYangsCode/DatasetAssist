@@ -18,6 +18,8 @@ class MainWindow(QMainWindow):
         self.ui.openPushButton.setFocusPolicy(Qt.NoFocus)
         self.ui.closePushButton.setFocusPolicy(Qt.NoFocus)
         self.ui.savePushButton.setFocusPolicy(Qt.NoFocus)
+        self.ui.chooseAllPushButton.setFocusPolicy(Qt.NoFocus)
+        self.ui.cancelChooseAllPushButton.setFocusPolicy(Qt.NoFocus)
         self.ui.plotCheckBox.setFocusPolicy(Qt.NoFocus)
         self.ui.jsonCopyCheckBox.setFocusPolicy(Qt.NoFocus)
 
@@ -90,6 +92,9 @@ class MainWindow(QMainWindow):
 
     def showImageByName(self, image_name:str, is_plot:bool=False):
         orig_image = self.getOrigImage(image_name, is_plot)
+        if orig_image.width() == 0 or orig_image.height() == 0:
+            self.ui.imageLabel.clear()
+            return
         ratio = orig_image.width() / orig_image.height()
         width = self.ui.imageLabel.width()
         height = self.ui.imageLabel.height()
@@ -250,10 +255,10 @@ class MainWindow(QMainWindow):
             return
         # open dialog to choose path
         # copy files
+        self.copyInfoLabel.setText(f"Ready to copy {len(choosed_images)} images...")
         file_dialog = QFileDialog(self)
         self.dst_folder = file_dialog.getExistingDirectory(self, "Copy dst image folder")
         if self.dst_folder != "":
-            self.copyInfoLabel.setText(f"Copy {len(choosed_images)} images Start...")
             self.copy_files(choosed_images, self.ui.jsonCopyCheckBox.isChecked())
             self.copyInfoLabel.setText(f"Copy {len(choosed_images)} images End!!")
 
